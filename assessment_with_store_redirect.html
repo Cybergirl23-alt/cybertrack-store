@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Cybersecurity Career Path Assessment - CyberTrack</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .assessment-container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .assessment-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(45deg, #00ff9d, #00d4ff);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #00ff9d 0%, #00d4ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1rem;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .value-prop {
+            background: rgba(0, 255, 157, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+        }
+
+        .value-prop-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .value-prop-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+
+        .assessment-form {
+            display: none;
+        }
+
+        .assessment-form.active {
+            display: block;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question-number {
+            color: #00ff9d;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .question-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: rgba(0, 255, 157, 0.5);
+            background: rgba(0, 255, 157, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .option.selected {
+            border-color: #00ff9d;
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #00ff9d;
+        }
+
+        .option-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .salary-range {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .salary-input {
+            flex: 1;
+        }
+
+        .salary-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .salary-input input {
+            width: 100%;
+            padding: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .salary-input input:focus {
+            outline: none;
+            border-color: #00ff9d;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00ff9d, #00d4ff);
+            color: #0a0a0a;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 255, 157, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #00ff9d, #00d4ff);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .email-capture {
+            display: none;
+            text-align: center;
+        }
+
+        .email-capture.active {
+            display: block;
+        }
+
+        .email-form {
+            background: rgba(0, 255, 157, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            margin-top: 2rem;
+        }
+
+        .email-input {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .email-input input {
+            flex: 2;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1rem;
+            min-width: 250px;
+        }
+
+        .email-input input:focus {
+            outline: none;
+            border-color: #00ff9d;
+        }
+
+        .email-input button {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .results {
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .result-card {
+            background: rgba(0, 255, 157, 0.05);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            color: #00ff9d;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .result-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #00ff9d;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.25rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(45deg, rgba(0, 255, 157, 0.1), rgba(0, 212, 255, 0.1));
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .timer {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .assessment-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .email-input {
+                flex-direction: column;
+            }
+
+            .email-input input,
+            .email-input button {
+                min-width: auto;
+            }
+
+            .salary-range {
+                flex-direction: column;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 255, 157, 0.3);
+            border-top: 4px solid #00ff9d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="assessment-container">
+        <!-- Header Section -->
+        <div class="header">
+            <h1>Free Cybersecurity Career Path Assessment</h1>
+            <p>Discover your perfect cybersecurity role based on your background, skills, and career goals</p>
+            
+            <div class="value-props">
+                <div class="value-prop">
+                    <span class="value-prop-icon">🎯</span>
+                    <div class="value-prop-text">Personalized Role Matches</div>
+                </div>
+                <div class="value-prop">
+                    <span class="value-prop-icon">💰</span>
+                    <div class="value-prop-text">Salary Projections</div>
+                </div>
+                <div class="value-prop">
+                    <span class="value-prop-icon">⏱️</span>
+                    <div class="value-prop-text">Timeline Estimates</div>
+                </div>
+                <div class="value-prop">
+                    <span class="value-prop-icon">📋</span>
+                    <div class="value-prop-text">Custom Roadmap</div>
+                </div>
+            </div>
+
+            <div class="timer">⚡ Limited Time: Get Your FREE Assessment Results + Bonus Career Roadmap</div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <!-- Assessment Form -->
+        <form class="assessment-form active" id="assessmentForm">
+            <!-- Question 1: Current Background -->
+            <div class="question-container" data-question="1">
+                <div class="question-number">Question 1 of 7</div>
+                <h2 class="question-title">What's your current professional background?</h2>
+                <div class="options-grid">
+                    <div class="option" data-value="healthcare">
+                        <div class="option-title">🏥 Healthcare</div>
+                        <div class="option-description">Doctor, nurse, medical technician, healthcare IT, medical records, or healthcare administration</div>
+                    </div>
+                    <div class="option" data-value="finance">
+                        <div class="option-title">💰 Finance & Banking</div>
+                        <div class="option-description">Financial analyst, accountant, banker, insurance, risk management, or audit professional</div>
+                    </div>
+                    <div class="option" data-value="education">
+                        <div class="option-title">🎓 Education</div>
+                        <div class="option-description">Teacher, professor, administrator, educational technology, or training professional</div>
+                    </div>
+                    <div class="option" data-value="it">
+                        <div class="option-title">💻 IT Professional</div>
+                        <div class="option-description">Network admin, system admin, developer, help desk, or IT support</div>
+                    </div>
+                    <div class="option" data-value="legal">
+                        <div class="option-title">⚖️ Legal</div>
+                        <div class="option-description">Lawyer, paralegal, compliance officer, or legal support professional</div>
+                    </div>
+                    <div class="option" data-value="government">
+                        <div class="option-title">🏛️ Government/Military</div>
+                        <div class="option-description">Federal, state, local government, or military service member/veteran</div>
+                    </div>
+                    <div class="option" data-value="manufacturing">
+                        <div class="option-title">🏭 Manufacturing/Engineering</div>
+                        <div class="option-description">Industrial engineer, operations, quality control, or manufacturing professional</div>
+                    </div>
+                    <div class="option" data-value="other">
+                        <div class="option-title">🔄 Other Background</div>
+                        <div class="option-description">Retail, sales, marketing, non-profit, or other professional background</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2: Experience Level -->
+            <div class="question-container" data-question="2" style="display: none;">
+                <div class="question-number">Question 2 of 7</div>
+                <h2 class="question-title">How many years of professional experience do you have?</h2>
+                <div class="options-grid">
+                    <div class="option" data-value="entry">
+                        <div class="option-title">0-2 Years</div>
+                        <div class="option-description">Recent graduate or early career professional</div>
+                    </div>
+                    <div class="option" data-value="mid">
+                        <div class="option-title">3-7 Years</div>
+                        <div class="option-description">Solid foundation with proven track record</div>
+                    </div>
+                    <div class="option" data-value="senior">
+                        <div class="option-title">8-15 Years</div>
+                        <div class="option-description">Senior professional with leadership experience</div>
+                    </div>
+                    <div class="option" data-value="executive">
+                        <div class="option-title">15+ Years</div>
+                        <div class="option-description">Executive or highly experienced professional</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3: Current Salary -->
+            <div class="question-container" data-question="3" style="display: none;">
+                <div class="question-number">Question 3 of 7</div>
+                <h2 class="question-title">What's your current salary range? (This helps us project your earning potential)</h2>
+                <div class="salary-range">
+                    <div class="salary-input">
+                        <label for="currentSalary">Current Annual Salary</label>
+                        <input type="number" id="currentSalary" placeholder="e.g., 75000" min="20000" max="500000">
+                    </div>
+                    <div class="salary-input">
+                        <label for="targetSalary">Target Cybersecurity Salary</label>
+                        <input type="number" id="targetSalary" placeholder="e.g., 100000" min="50000" max="1000000">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4: Technical Comfort -->
+            <div class="question-container" data-question="4" style="display: none;">
+                <div class="question-number">Question 4 of 7</div>
+                <h2 class="question-title">How comfortable are you with technology?</h2>
+                <div class="options-grid">
+                    <div class="option" data-value="basic">
+                        <div class="option-title">Basic User</div>
+                        <div class="option-description">Use computers daily but prefer simple, user-friendly tools</div>
+                    </div>
+                    <div class="option" data-value="intermediate">
+                        <div class="option-title">Intermediate</div>
+                        <div class="option-description">Comfortable with software, can troubleshoot basic issues</div>
+                    </div>
+                    <div class="option" data-value="advanced">
+                        <div class="option-title">Advanced</div>
+                        <div class="option-description">Strong technical skills, some programming or networking experience</div>
+                    </div>
+                    <div class="option" data-value="expert">
+                        <div class="option-title">Technical Expert</div>
+                        <div class="option-description">Deep technical knowledge, programming, system administration</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5: Work Preference -->
+            <div class="question-container" data-question="5" style="display: none;">
+                <div class="question-number">Question 5 of 7</div>
+                <h2 class="question-title">What type of work environment do you prefer?</h2>
+                <div class="options-grid">
+                    <div class="option" data-value="remote">
+                        <div class="option-title">🏠 Remote/Flexible</div>
+                        <div class="option-description">Work from anywhere, flexible schedule preferred</div>
+                    </div>
+                    <div class="option" data-value="office">
+                        <div class="option-title">🏢 Traditional Office</div>
+                        <div class="option-description">Structured environment, in-person collaboration</div>
+                    </div>
+                    <div class="option" data-value="hybrid">
+                        <div class="option-title">🔄 Hybrid</div>
+                        <div class="option-description">Mix of remote and office work</div>
+                    </div>
+                    <div class="option" data-value="travel">
+                        <div class="option-title">✈️ Travel/Consulting</div>
+                        <div class="option-description">Client sites, travel opportunities, consulting work</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6: Career Goals -->
+            <div class="question-container" data-question="6" style="display: none;">
+                <div class="question-number">Question 6 of 7</div>
+                <h2 class="question-title">What's your primary career goal?</h2>
+                <div class="options-grid">
+                    <div class="option" data-value="security">
+                        <div class="option-title">🛡️ Job Security</div>
+                        <div class="option-description">Stable, recession-proof career with steady growth</div>
+                    </div>
+                    <div class="option" data-value="salary">
+                        <div class="option-title">💰 High Salary</div>
+                        <div class="option-description">Maximize earning potential, reach six-figure income</div>
+                    </div>
+                    <div class="option" data-value="impact">
+                        <div class="option-title">🎯 Meaningful Impact</div>
+                        <div class="option-description">Protect organizations and people from cyber threats</div>
+                    </div>
+                    <div class="option" data-value="leadership">
+                        <div class="option-title">👑 Leadership Role</div>
+                        <div class="option-description">Advance to management or executive positions</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7: Timeline -->
+            <div class="question-container" data-question="7" style="display: none;">
+                <div class="question-number">Question 7 of 7</div>
+                <h2 class="question-title">When do you want to transition to cybersecurity?</h2>
+                <div class="options-grid">
+                    <div class="option" data-value="immediate">
+                        <div class="option-title">⚡ Immediately</div>
+                        <div class="option-description">Ready to start the transition process now</div>
+                    </div>
+                    <div class="option" data-value="3months">
+                        <div class="option-title">📅 Within 3 Months</div>
+                        <div class="option-description">Planning to begin transition soon</div>
+                    </div>
+                    <div class="option" data-value="6months">
+                        <div class="option-title">🗓️ 3-6 Months</div>
+                        <div class="option-description">Want to plan and prepare before transitioning</div>
+                    </div>
+                    <div class="option" data-value="longer">
+                        <div class="option-title">🎯 6+ Months</div>
+                        <div class="option-description">Long-term planning, exploring options</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button type="button" class="btn btn-secondary" id="prevBtn" onclick="previousQuestion()" style="display: none;">Previous</button>
+                <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next Question</button>
+            </div>
+        </form>
+
+        <!-- Email Capture -->
+        <div class="email-capture" id="emailCapture">
+            <h2 style="color: #00ff9d; margin-bottom: 1rem;">🎉 Assessment Complete!</h2>
+            <p style="margin-bottom: 1rem;">Get your personalized cybersecurity career roadmap delivered instantly to your email.</p>
+            
+            <div class="email-form">
+                <h3 style="margin-bottom: 1rem;">Your FREE Results Include:</h3>
+                <ul style="text-align: left; margin-bottom: 1.5rem; padding-left: 1rem;">
+                    <li>✅ Your top 3 cybersecurity role matches</li>
+                    <li>✅ Personalized salary projections</li>
+                    <li>✅ Custom transition timeline</li>
+                    <li>✅ Required certifications roadmap</li>
+                    <li>✅ Bonus: Industry insider tips (valued at $97)</li>
+                </ul>
+                
+                <div class="email-input">
+                    <input type="email" id="userEmail" placeholder="Enter your email address" required>
+                    <button type="button" class="btn btn-primary" onclick="submitAssessment()">Get My Results Now</button>
+                </div>
+                
+                <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 1rem;">
+                    🔒 Your information is secure. No spam, ever. Unsubscribe anytime.
+                </p>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loadingState">
+            <div class="spinner"></div>
+            <h3>Analyzing Your Responses...</h3>
+            <p>Calculating your personalized cybersecurity career path</p>
+        </div>
+
+        <!-- Results Section -->
+        <div class="results" id="resultsSection">
+            <div class="result-card">
+                <h2 class="result-title">🎯 Your Perfect Cybersecurity Role Match</h2>
+                <div id="roleRecommendation"></div>
+                
+                <div class="result-metrics" id="roleMetrics"></div>
+                
+                <div id="transitionPath"></div>
+            </div>
+
+            <div class="cta-section">
+                <h3 style="margin-bottom: 1rem; color: #00ff9d;">🚀 Ready to Fast-Track Your Transition?</h3>
+                <p style="margin-bottom: 1.5rem;">Get the complete step-by-step guide for your specific career path.</p>
+                <button class="btn btn-primary" onclick="downloadGuide()" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    Download Your Complete Career Guide ($49 Value - FREE Today)
+                </button>
+                <p style="font-size: 0.9rem; margin-top: 1rem; color: rgba(255,255,255,0.7);">
+                    ⏰ Limited time offer expires in <span id="countdown">14:59</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 7;
+        let assessmentData = {};
+
+        // Handle option selection
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.option')) {
+                const option = e.target.closest('.option');
+                const questionContainer = option.closest('.question-container');
+                
+                // Remove previous selections
+                questionContainer.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Select current option
+                option.classList.add('selected');
+                
+                // Store the value
+                const question = questionContainer.dataset.question;
+                assessmentData[`question${question}`] = option.dataset.value;
+                
+                // Auto-advance for better UX (except last question)
+                if (currentQuestion < totalQuestions) {
+                    setTimeout(() => {
+                        nextQuestion();
+                    }, 500);
+                }
+            }
+        });
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextQuestion() {
+            // Validate current question
+            if (!validateCurrentQuestion()) {
+                return;
+            }
+
+            // Hide current question
+            const currentQuestionEl = document.querySelector(`[data-question="${currentQuestion}"]`);
+            if (currentQuestionEl) {
+                currentQuestionEl.style.display = 'none';
+            }
+
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                // Show next question
+                const nextQuestionEl = document.querySelector(`[data-question="${currentQuestion}"]`);
+                if (nextQuestionEl) {
+                    nextQuestionEl.style.display = 'block';
+                }
+                
+                updateProgress();
+                updateNavigation();
+            } else {
+                // Assessment complete, show email capture
+                document.getElementById('assessmentForm').classList.remove('active');
+                document.getElementById('emailCapture').classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 1) {
+                // Hide current question
+                const currentQuestionEl = document.querySelector(`[data-question="${currentQuestion}"]`);
+                if (currentQuestionEl) {
+                    currentQuestionEl.style.display = 'none';
+                }
+
+                currentQuestion--;
+                
+                // Show previous question
+                const prevQuestionEl = document.querySelector(`[data-question="${currentQuestion}"]`);
+                if (prevQuestionEl) {
+                    prevQuestionEl.style.display = 'block';
+                }
+                
+                updateProgress();
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.style.display = currentQuestion > 1 ? 'block' : 'none';
+            
+            if (currentQuestion === totalQuestions) {
+                nextBtn.textContent = 'Complete Assessment';
+            } else {
+                nextBtn.textContent = 'Next Question';
+            }
+        }
+
+        function validateCurrentQuestion() {
+            if (currentQuestion === 3) {
+                // Validate salary inputs
+                const currentSalary = document.getElementById('currentSalary').value;
+                const targetSalary = document.getElementById('targetSalary').value;
+                
+                if (!currentSalary || !targetSalary) {
+                    alert('Please enter both current and target salary ranges.');
+                    return false;
+                }
+                
+                assessmentData.currentSalary = currentSalary;
+                assessmentData.targetSalary = targetSalary;
+                return true;
+            }
+            
+            // For other questions, check if option is selected
+            const questionContainer = document.querySelector(`[data-question="${currentQuestion}"]`);
+            const selectedOption = questionContainer.querySelector('.option.selected');
+            
+            if (!selectedOption && currentQuestion !== 3) {
+                alert('Please select an option to continue.');
+                return false;
+            }
+            
+            return true;
+        }
+
+        function submitAssessment() {
+            const email = document.getElementById('userEmail').value;
+            
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            
+            assessmentData.email = email;
+            
+            // Show loading state
+            document.getElementById('emailCapture').classList.remove('active');
+            document.getElementById('loadingState').classList.add('active');
+            
+            // Simulate processing time
+            setTimeout(() => {
+                generateResults();
+                document.getElementById('loadingState').classList.remove('active');
+                document.getElementById('resultsSection').classList.add('active');
+                startCountdown();
+            }, 3000);
+        }
+
+        function generateResults() {
+            const background = assessmentData.question1;
+            const experience = assessmentData.question2;
+            const techComfort = assessmentData.question4;
+            const workPreference = assessmentData.question5;
+            const goal = assessmentData.question6;
+
+            // Generate personalized recommendations based on responses
+            const recommendations = getRecommendations(background, experience, techComfort, workPreference, goal);
+            
+            // Display results
+            document.getElementById('roleRecommendation').innerHTML = `
+                <h3 style="color: #00d4ff; margin-bottom: 1rem;">${recommendations.primaryRole}</h3>
+                <p style="margin-bottom: 1rem;">${recommendations.description}</p>
+                <p style="color: #00ff9d; font-weight: 600;">Match Score: ${recommendations.matchScore}% based on your background and preferences</p>
+            `;
+            
+            document.getElementById('roleMetrics').innerHTML = `
+                <div class="metric">
+                    <div class="metric-value">${recommendations.timeline}</div>
+                    <div class="metric-label">Transition Timeline</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">${recommendations.startingSalary}</div>
+                    <div class="metric-label">Starting Salary</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">${recommendations.demandGrowth}</div>
+                    <div class="metric-label">Job Growth</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">${recommendations.successRate}%</div>
+                    <div class="metric-label">Success Rate</div>
+                </div>
+            `;
+            
+            document.getElementById('transitionPath').innerHTML = `
+                <h4 style="color: #00ff9d; margin: 1.5rem 0 1rem 0;">Your Transition Roadmap:</h4>
+                <ul style="padding-left: 1rem;">
+                    ${recommendations.roadmap.map(step => `<li style="margin-bottom: 0.5rem;">${step}</li>`).join('')}
+                </ul>
+                
+                <h4 style="color: #00ff9d; margin: 1.5rem 0 1rem 0;">Recommended Certifications:</h4>
+                <p>${recommendations.certifications}</p>
+            `;
+        }
+
+        function getRecommendations(background, experience, techComfort, workPreference, goal) {
+            // Logic to determine best role based on responses
+            const roleMap = {
+                healthcare: {
+                    primaryRole: "Healthcare Cybersecurity Specialist",
+                    description: "Perfect match! Your healthcare background makes you ideal for protecting medical systems and patient data. HIPAA compliance experience gives you a huge advantage.",
+                    matchScore: 94,
+                    timeline: "6-12 months",
+                    startingSalary: "$85K",
+                    demandGrowth: "+80%",
+                    successRate: 92,
+                    roadmap: [
+                        "Complete Security+ certification (3-4 months)",
+                        "Study healthcare cybersecurity frameworks (HIPAA, HITECH)",
+                        "Gain hands-on experience with medical device security",
+                        "Apply for Healthcare Security Analyst positions",
+                        "Consider CHPS (Certified Healthcare Privacy & Security) certification"
+                    ],
+                    certifications: "Security+, CHPS, Healthcare IT Technician, CISSP (long-term)"
+                },
+                finance: {
+                    primaryRole: "GRC (Governance, Risk & Compliance) Analyst",
+                    description: "Excellent fit! Your finance background translates perfectly to cybersecurity risk management. Financial compliance experience is highly valued.",
+                    matchScore: 96,
+                    timeline: "4-8 months",
+                    startingSalary: "$97K",
+                    demandGrowth: "+25%",
+                    successRate: 94,
+                    roadmap: [
+                        "Leverage existing risk management experience",
+                        "Complete Security+ and CRISC certifications",
+                        "Study cybersecurity frameworks (NIST, ISO 27001)",
+                        "Apply for GRC Analyst or Risk Analyst positions",
+                        "Progress to Senior GRC or Risk Manager roles"
+                    ],
+                    certifications: "Security+, CRISC, CISA, CISM (advanced)"
+                },
+                it: {
+                    primaryRole: "Security Operations Center (SOC) Analyst",
+                    description: "Fast track opportunity! Your IT background provides the technical foundation. You can transition quickly into cybersecurity operations.",
+                    matchScore: 97,
+                    timeline: "3-6 months",
+                    startingSalary: "$88K",
+                    demandGrowth: "+33%",
+                    successRate: 97,
+                    roadmap: [
+                        "Complete Security+ certification immediately",
+                        "Learn SIEM tools and log analysis",
+                        "Practice incident response procedures",
+                        "Apply for SOC Analyst positions",
+                        "Advance to Senior SOC Analyst or Security Engineer"
+                    ],
+                    certifications: "Security+, CySA+, GCIH, CISSP (long-term)"
+                }
+                // Add more role mappings...
+            };
+
+            return roleMap[background] || {
+                primaryRole: "Cybersecurity Analyst",
+                description: "Great potential! Every background has transferable skills for cybersecurity. Your unique perspective is valuable.",
+                matchScore: 87,
+                timeline: "6-12 months",
+                startingSalary: "$75K",
+                demandGrowth: "+33%",
+                successRate: 87,
+                roadmap: [
+                    "Build foundational cybersecurity knowledge",
+                    "Complete Security+ certification",
+                    "Gain hands-on experience through labs",
+                    "Network with cybersecurity professionals",
+                    "Apply for entry-level security positions"
+                ],
+                certifications: "Security+, Network+, SSCP, CISSP (long-term)"
+            };
+        }
+
+        function downloadGuide() {
+            // In production, this would trigger the actual download
+            alert('🎉 Success! Your personalized career guide has been sent to your email.\n\nYou\'ll also receive:\n• Weekly job market updates\n• Exclusive certification discounts\n• Career coaching tips\n• Success stories from career changers like you');
+            
+            // Track the conversion
+            console.log('Lead captured and guide downloaded:', assessmentData);
+        }
+
+        function startCountdown() {
+            let timeLeft = 15 * 60; // 15 minutes in seconds
+            const countdownElement = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                
+                countdownElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "EXPIRED";
+                }
+                
+                timeLeft--;
+            }, 1000);
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
